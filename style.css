@@ -1,0 +1,30 @@
+#curriculum {
+    opacity: 0.8;
+    padding: 5px;
+    border-spacing: 4px;
+    border-radius: 5px;
+    background-color: rgb(221, 215, 215);
+    margin: auto;
+    border-collapse: separate;
+    
+}
+
+#curriculum th {
+    border-bottom: solid 1px;
+}
+
+#curriculum tr:nth-child(even) td:first-child {
+    background-color: rgb(113, 113, 113);
+}
+
+#curriculum tr:nth-child(odd) td:first-child {
+    background-color: rgb(198, 184, 184);
+}
+
+#curriculum > tbody > tr > td {
+    border-radius: 5px;
+    opacity: 0.9;
+    padding: 10px;
+    text-align: center;
+    width: 100px;
+}

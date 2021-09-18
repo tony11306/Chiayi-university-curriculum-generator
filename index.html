@@ -5,11 +5,92 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="callAPI.js"></script>
+    <script>
+        function setStatusLoggingIn() {
+            let account = $("#account").val()
+            let password = $("#password").val()
+
+            if(account.length == 0 || password.length == 0) {
+                $("#status").text("")
+            } else {
+                $("#status").text("生成中...")
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <form action=""></form>
+    <h1 id="title">嘉義大學課表產生器</h1>
+    <div>
+        <form action="javascript: generate()">
+            <label for="account">學號:</label>
+            <input type="text" id="account" name="account" value="" required="required" required placeholder="你的學號">
+            <br>
+            <label for="password">密碼:</label>
+            <input type="password" id="password" name="password" value="" required="required" required placeholder="你校務行政系統的密碼">
+            <br>
+            <p id="status"></p>
+            <label for=""></label>
+            <button type="submit" onclick="setStatusLoggingIn()">生成</button>
+        </form>
+    </div>
+    
+    <table id="curriculum">
+        <caption>課表</caption>
+        <tbody>
+            <tr>
+                <th>節\日</th>
+                <th>星期一</th>
+                <th>星期二</th>
+                <th>星期三</th>
+                <th>星期四</th>
+                <th>星期五</th>
+            </tr>
+            <tr>
+                <td>第 1 節<br>08:10 ~ 09:00</td>
+            </tr>
+            <tr>
+                <td>第 2 節<br>09:10 ~ 10:00</td>
+            </tr>
+            <tr>
+                <td>第 3 節<br>10:10 ~ 11:00</td>
+            </tr>
+            <tr>
+                <td>第 4 節<br>11:10 ~ 12:00</td>
+            </tr>
+            <tr>
+                <td>第 F 節<br>12:10 ~ 13:00</td>
+            </tr>
+            <tr>
+                <td>第 5 節<br>13:20 ~ 14:10</td>
+            </tr>
+            <tr>
+                <td>第 6 節<br>14:20 ~ 15:10</td>
+            </tr>
+            <tr>
+                <td>第 7 節<br>15:20 ~ 16:10</td>
+            </tr>
+            <tr>
+                <td>第 8 節<br>16:20 ~ 17:10</td>
+            </tr>
+            <tr>
+                <td>第 9 節<br>17:20 ~ 18:10</td>
+            </tr>
+            <tr>
+                <td>第 A 節<br>18:30 ~ 19:15</td>
+            </tr>
+            <tr>
+                <td>第 B 節<br>19:20 ~ 20:05</td>
+            </tr>
+            <tr>
+                <td>第 C 節<br>20:10 ~ 21:55</td>
+            </tr>
+            <tr>
+                <td>第 D 節<br>21:00 ~ 21:45</td>
+            </tr>
+        </tbody>
+    </table>
 </body>
-<script>
-
-</script>
 </html>
