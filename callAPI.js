@@ -25,68 +25,80 @@ const CLASS_MAP = {
     'D': 14
 }
 
+function doRowspan() {
+    for(let i = 1; i <= 5; ++i) {
+        $("#curriculum").rowspan(i)
+    }
+}
+
+async function setSubmitButtonDisabled(isDisabled) {
+    $(".form-submit").prop('disabled', isDisabled)
+}
+
 async function login() {
     let data = {
         account: $("#account").val(),
         password: $("#password").val()
     }
-
     const LOGIN_URL = 'https://chayi-university-system-api.herokuapp.com/login'
     let webpid1 = ""
-    console.log(data)
-
+    $("#status").text("登入中...")
     $.ajax({
         url: LOGIN_URL,
         type: "POST",
         dataType: "json",
-        async: false,
+        async: true,
         data: data,
-    }).done(function(response) {
+    }).done(async function (response) {
         webpid1 = response.result.webpid1
-        console.log(`取得 webpid1: ${webpid1}`)
-        $("#status").text("登入成功")
+        if (webpid1.length == 0) {
+            return
+        }
+        $("#status").text("正在生成你的課表...")
+        courses = await getCourse(webpid1)
 
-    }).fail(function(data, textStatus, xhr) {
-        if(data.status == 401) {
+    }).fail(async function (data, textStatus, xhr) {
+        if (data.status == 401) {
             $("#status").text("帳號或密碼錯誤")
         } else {
             $("#status").text("無法預期的錯誤")
         }
+        await setSubmitButtonDisabled(false)
         console.log("error", data.status);
-        console.log("STATUS: "+xhr);
+        console.log("STATUS: " + xhr);
     })
-
-    return webpid1
+    
 }
 
 async function getCourse(webpid1) {
     const COURSE_URL = 'https://chayi-university-system-api.herokuapp.com/course/'
-    let allCourse = {}
     $.ajax({
         url: COURSE_URL + webpid1,
         type: "POST",
-        async: false,
-    }).done(function(response) {
-        console.log(response.result)
-        allCourse = response.result
+        async: true,
+    }).done(async function (response) {
+        await resetTable()
+
+        createCurriculum(response.result["所有課程"])
+        .then($("#curriculum").rowspanizer())
+        
+        $("#curriculum").show()
         $("#status").text("生成成功！")
-
-    }).fail(function(data, textStatus, xhr) {
+        await setSubmitButtonDisabled(false)
+    }).fail(async function (data, textStatus, xhr) {
         $("#status").text("無法預期的錯誤")
+        await setSubmitButtonDisabled(false)
         console.log("error", data.status);
-        console.log("STATUS: "+xhr);
-    })
-
-    return allCourse
+        console.log("STATUS: " + xhr);
+    }) 
 
 }
 
-function resetTable() {
+async function resetTable() {
     $("#curriculum").html(`
-        <caption>課表</caption>
         <tbody>
             <tr>
-                <th>節\日</th>
+                <th>節\\日</th>
                 <th>星期一</th>
                 <th>星期二</th>
                 <th>星期三</th>
@@ -141,57 +153,58 @@ function resetTable() {
     let rows = $("#curriculum > tbody > tr").get().slice(1)
 
     rows.forEach(row => {
-        for(let i = 0; i < 5; ++i) {
+        for (let i = 0; i < 5; ++i) {
             $(row).find("td:last").after("<td></td>")
         }
     })
 
+    $("#curriculum").show()
+
 }
 
-async function createCurriculum(courses) {
-    let rows = $("#curriculum > tbody > tr").get()
+function createCurriculum(courses) {
+    return new Promise((resolve, reject) => {
+        let rows = $("#curriculum > tbody > tr").get()
+        
+        courses.forEach(course => {
+            let courseName = course["課程名稱"]
+            let coursesTime = course["上課時間"]
+            coursesTime.forEach(courseTime => {
 
-    courses.forEach(course => {
-        let courseName = course["課程名稱"]
-        let coursesTime = course["上課時間"]
-        coursesTime.forEach(courseTime => {
+                let day = CHINESE_WORD_TO_NUMBER[courseTime["星期"]]
+                let startClass
+                let endClass
 
-            let day = CHINESE_WORD_TO_NUMBER[courseTime["星期"]]
-            let startClass
-            let endClass
+                if (courseTime["開始節次"] == 'Z') {
+                    startClass = 1
+                    endClass = 8
+                } else {
+                    startClass = CLASS_MAP[courseTime["開始節次"]]
+                    endClass = CLASS_MAP[courseTime["結束節次"]]
+                }
 
-            if(courseTime["開始節次"] == 'Z') {
-                startClass = 1
-                endClass = 8
-            } else {
-                startClass = CLASS_MAP[courseTime["開始節次"]]
-                endClass = CLASS_MAP[courseTime["結束節次"]]
-            }
-                
-            for(let i = startClass; i <= endClass; ++i) {
-                tds = $(rows[i]).children('td')
-                $(tds[day]).text(courseName)
-            }
-            
-            
+                for (let i = startClass; i <= endClass; ++i) {
+                    tds = $(rows[i]).children('td')
+                    $(tds[day]).text(courseName)
+                    $(tds[day]).addClass('used-td')
+                }
+
+
+            })
         })
-    })
 
+        resolve(1)
+    })
+    
 
 }
 
 async function generate() {
-
-    console.log("now logging in...")
-    let webpid1 = await login()
-
-    if(webpid1.length == 0) {
-        return
-    }
-    let courses = await getCourse(webpid1)
-    resetTable()
-
-    await createCurriculum(courses["所有課程"])
+    await setSubmitButtonDisabled(true)
+    await login()
+    
 }
+
+
 
 
