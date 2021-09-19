@@ -64,8 +64,6 @@ async function login() {
             $("#status").text("無法預期的錯誤")
         }
         await setSubmitButtonDisabled(false)
-        console.log("error", data.status);
-        console.log("STATUS: " + xhr);
     })
     
 }
@@ -88,8 +86,6 @@ async function getCourse(webpid1) {
     }).fail(async function (data, textStatus, xhr) {
         $("#status").text("無法預期的錯誤")
         await setSubmitButtonDisabled(false)
-        console.log("error", data.status);
-        console.log("STATUS: " + xhr);
     }) 
 
 }
