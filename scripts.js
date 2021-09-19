@@ -95,7 +95,9 @@ async function getCourse(webpid1) {
 }
 
 async function resetTable() {
-    $("#curriculum").html(`
+    var cloneTable = $("#curriculum").clone()
+    $("#curriculum").remove()
+    cloneTable.html(`
         <tbody>
             <tr>
                 <th>節\\日</th>
@@ -149,7 +151,7 @@ async function resetTable() {
             </tr>
         </tbody>
     `)
-
+    $(".table-div").append(cloneTable)
     let rows = $("#curriculum > tbody > tr").get().slice(1)
 
     rows.forEach(row => {

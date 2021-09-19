@@ -8,7 +8,7 @@
     <title>Document</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="callAPI.js"></script>
+    <script src="scripts.js"></script>
     <script>
         function setStatusLoggingIn() {
             let account = $("#account").val()
@@ -57,10 +57,13 @@
           </div>
     </nav>
 
-
+    
     <main>
         <div class="container">
-
+            <div class="alert alert-light" role="alert">
+                由於程式後端會在沒人使用時休眠，所以使用時卡登入太久可以重整一下，有問題可以回報
+                <a href="mailto:tony20020507@gmail.com">tony11306</a>
+              </div>
             <!-- Content here -->
             <form action="javascript: generate()">
                 <div class="form-group">
@@ -83,24 +86,11 @@
         </div>
 
     </main>
-    <div class="container">
+    <div class="container table-div">
         <table id="curriculum" class="table">
 
         </table>
     </div>
-    <!--
-    <footer class="text-center text-lg-start fixed-bottom page-footer">
-
-        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-            © 2021 Copyright:
-            <br>
-            <a class="text-dark" href="https://github.com/">tony11306</a>
-            <br>
-            All right preserved.
-
-        </div>
-    </footer>
-    -->
 
     <!-- Footer -->
     <footer class="text-center text-lg-start text-muted">
