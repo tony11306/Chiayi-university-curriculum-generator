@@ -32,6 +32,23 @@
             }
         }
     </script>
+    <script>
+        function wakeBackendUp() { // 隨便送個request叫醒後端
+            const LOGIN_URL = 'https://chayi-university-system-api.herokuapp.com/login'
+            $.ajax({
+                url: LOGIN_URL,
+                type: "POST",
+                dataType: "json",
+                async: true,
+                data: {
+                    account: 'wakeBackendUp',
+                    password: 'wakeBackendUp'
+                },
+            }).fail(() => {
+            })
+        }
+        window.onload = wakeBackendUp
+    </script>
     <link rel="stylesheet" href="style.css">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
