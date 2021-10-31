@@ -167,6 +167,8 @@ function createCurriculum(courses) {
         courses.forEach(course => {
             let courseName = course["課程名稱"]
             let coursesTime = course["上課時間"]
+            let courseClassroom = course["上課教室"]
+            let courseTeacher = course["授課老師"]
             coursesTime.forEach(courseTime => {
 
                 let day = CHINESE_WORD_TO_NUMBER[courseTime["星期"]]
@@ -183,7 +185,11 @@ function createCurriculum(courses) {
 
                 for (let i = startClass; i <= endClass; ++i) {
                     tds = $(rows[i]).children('td')
-                    $(tds[day]).text(courseName)
+                    $(tds[day]).append(`<div class="course-name">【${courseName}】</div>`)
+                    $(tds[day]).append('<br>')
+                    $(tds[day]).append(`<div class="course-classroom">${courseClassroom}</div>`)
+                    $(tds[day]).append(`<div class="course-teacher">教授: ${courseTeacher}</div>`)
+
                     $(tds[day]).addClass('used-td')
                 }
 
