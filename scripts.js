@@ -40,7 +40,7 @@ async function login() {
         account: $("#account").val(),
         password: $("#password").val()
     }
-    const LOGIN_URL = 'http://127.0.0.1:5000/login'
+    const LOGIN_URL = 'https://chayi-university-system-api.herokuapp.com/login'
     let webpid1 = ""
     $("#status").text("登入中...")
     $.ajax({
@@ -69,7 +69,7 @@ async function login() {
 }
 
 async function getCourse(webpid1) {
-    const COURSE_URL = 'http://127.0.0.1:5000/course'
+    const COURSE_URL = 'https://chayi-university-system-api.herokuapp.com/course'
     let data = {
         webpid1: webpid1
     }
