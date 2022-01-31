@@ -81,7 +81,7 @@ async function getCourse(webpid1) {
         async: true,
     }).done(async function (response) {
         await resetTable()
-
+        
         createCurriculum(response.result["所有課程"])
         .then($("#curriculum").rowspanizer())
         

@@ -32,6 +32,7 @@
             }
         }
     </script>
+    <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script>
         function wakeBackendUp() { // 隨便送個request叫醒後端
             const LOGIN_URL = 'https://chayi-university-system-api.herokuapp.com/login'
@@ -47,7 +48,12 @@
             }).fail(() => {
             })
         }
-        window.onload = wakeBackendUp
+
+        function onloadTasks() {
+            wakeBackendUp()
+        }
+
+        window.onload = onloadTasks
     </script>
     <link rel="stylesheet" href="style.css">
     <!-- Latest compiled and minified CSS -->
@@ -63,11 +69,6 @@
         crossorigin="anonymous"></script>
 
     <script src="jquery.rowspanizer.js"></script>
-    <script>
-        function test() {
-            $("#curriculum").rowspan(2)
-        }
-    </script>
 
 </head>
 
@@ -130,7 +131,7 @@
         <!-- Section: Social media -->
         <!-- Copyright -->
         <div class="text-center p-4">
-            © 2021 Copyright:
+            © 2022 Copyright:
             <a class="text-reset fw-bold" href="https://github.com/tony11306" target="_blank">tony11306</a>
             All right preserved.
         </div>
