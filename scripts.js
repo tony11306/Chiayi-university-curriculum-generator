@@ -1,3 +1,6 @@
+// ----------------------------------------------------------
+// ----------------on generate button click------------------
+// ----------------------------------------------------------
 const CHINESE_WORD_TO_NUMBER = {
     '一': 1,
     '二': 2,
@@ -7,7 +10,6 @@ const CHINESE_WORD_TO_NUMBER = {
     '六': 6,
     '日': 7,
 }
-
 const CLASS_MAP = {
     '1': 1,
     '2': 2,
@@ -24,78 +26,18 @@ const CLASS_MAP = {
     'C': 13,
     'D': 14
 }
+const LOGIN_URL = 'https://chayi-university-system-api.herokuapp.com/login'
+const PERSONAL_COURSE_DATAS_URL = 'https://chayi-university-system-api.herokuapp.com/course'
 
-function doRowspan() {
-    for(let i = 1; i <= 5; ++i) {
-        $("#curriculum").rowspan(i)
-    }
-}
-
-async function setSubmitButtonDisabled(isDisabled) {
+const setSubmitButtonDisabled = (isDisabled) => {
     $(".form-submit").prop('disabled', isDisabled)
 }
 
-async function login() {
-    let data = {
-        account: $("#account").val(),
-        password: $("#password").val()
-    }
-    const LOGIN_URL = 'https://chayi-university-system-api.herokuapp.com/login'
-    let webpid1 = ""
-    $("#status").text("登入中...")
-    $.ajax({
-        url: LOGIN_URL,
-        type: "POST",
-        dataType: "json",
-        async: true,
-        data: data,
-    }).done(async function (response) {
-        webpid1 = response.result.webpid1
-        if (webpid1.length == 0) {
-            return
-        }
-        $("#status").text("正在生成你的課表...")
-        courses = await getCourse(webpid1)
-
-    }).fail(async function (data, textStatus, xhr) {
-        if (data.status == 401) {
-            $("#status").text("帳號或密碼錯誤")
-        } else {
-            $("#status").text("無法預期的錯誤")
-        }
-        await setSubmitButtonDisabled(false)
-    })
-    
+const setStatusText = (newText) => {
+    $("#status").text(newText)
 }
 
-async function getCourse(webpid1) {
-    const COURSE_URL = 'https://chayi-university-system-api.herokuapp.com/course'
-    let data = {
-        webpid1: webpid1
-    }
-
-    $.ajax({
-        url: COURSE_URL,
-        type: "POST",
-        data: data,
-        async: true,
-    }).done(async function (response) {
-        await resetTable()
-        
-        createCurriculum(response.result["所有課程"])
-        .then($("#curriculum").rowspanizer())
-        
-        $("#curriculum").show()
-        $("#status").text("生成成功！")
-        await setSubmitButtonDisabled(false)
-    }).fail(async function (data, textStatus, xhr) {
-        $("#status").text("無法預期的錯誤")
-        await setSubmitButtonDisabled(false)
-    }) 
-
-}
-
-async function resetTable() {
+const resetTable = () => {
     var cloneTable = $("#curriculum").clone()
     $("#curriculum").remove()
     cloneTable.html(`
@@ -165,54 +107,140 @@ async function resetTable() {
 
 }
 
-function createCurriculum(courses) {
-    return new Promise((resolve, reject) => {
-        let rows = $("#curriculum > tbody > tr").get()
-        
-        courses.forEach(course => {
-            let courseName = course["課程名稱"]
-            let coursesTime = course["上課時間"]
-            let courseClassroom = course["上課教室"]
-            let courseTeacher = course["授課老師"]
-            coursesTime.forEach(courseTime => {
+const doRowspan = () => {
+    for (let i = 1; i <= 5; ++i) {
+        $("#curriculum").rowspan(i)
+    }
+}
 
-                let day = CHINESE_WORD_TO_NUMBER[courseTime["星期"]]
-                let startClass
-                let endClass
+// render the table
+const renderTable = (courses) => {
+    let rows = $("#curriculum > tbody > tr").get()
 
-                if (courseTime["開始節次"] == 'Z') {
-                    startClass = 1
-                    endClass = 8
-                } else {
-                    startClass = CLASS_MAP[courseTime["開始節次"]]
-                    endClass = CLASS_MAP[courseTime["結束節次"]]
-                }
+    courses.forEach(course => {
+        let courseName = course["課程名稱"]
+        let coursesTime = course["上課時間"]
+        let courseClassroom = course["上課教室"]
+        let courseTeacher = course["授課老師"]
+        coursesTime.forEach(courseTime => {
 
-                for (let i = startClass; i <= endClass; ++i) {
-                    tds = $(rows[i]).children('td')
-                    $(tds[day]).append(`<div class="course-name">【${courseName}】</div>`)
-                    $(tds[day]).append('<br>')
-                    $(tds[day]).append(`<div class="course-classroom">${courseClassroom}</div>`)
-                    $(tds[day]).append(`<div class="course-teacher">教授: ${courseTeacher}</div>`)
+            let day = CHINESE_WORD_TO_NUMBER[courseTime["星期"]]
+            let startClass
+            let endClass
 
-                    $(tds[day]).addClass('used-td')
-                }
+            if (courseTime["開始節次"] == 'Z') {
+                startClass = 1
+                endClass = 8
+            } else {
+                startClass = CLASS_MAP[courseTime["開始節次"]]
+                endClass = CLASS_MAP[courseTime["結束節次"]]
+            }
+
+            for (let i = startClass; i <= endClass; ++i) {
+                tds = $(rows[i]).children('td')
+                $(tds[day]).append(`<div class="course-name">【${courseName}】</div>`)
+                $(tds[day]).append('<br>')
+                $(tds[day]).append(`<div class="course-classroom">${courseClassroom}</div>`)
+                $(tds[day]).append(`<div class="course-teacher">教授: ${courseTeacher}</div>`)
+
+                $(tds[day]).addClass('used-td')
+            }
 
 
-            })
         })
-
-        resolve(1)
     })
-    
-
 }
 
-async function generate() {
-    await setSubmitButtonDisabled(true)
-    await login()
-    
+// return a promise of a request for personal course datas
+const getPersonalCourseDatas = async (webpid1) => {
+    return axios.post(PERSONAL_COURSE_DATAS_URL, { webpid1: webpid1 })
+        .then(response => response.data.result)
 }
+
+// return a promise of a request for webpid1
+const getWebpid1 = async () => {
+    const account = $("#account").val()
+    const password = $("#password").val()
+
+    return axios.post(LOGIN_URL, { account: account, password: password })
+        .then(response => response.data.result.webpid1)
+}
+
+const onGeneratorButtonClick = async () => {
+
+    if($("#account").val().length === 0 && $("#password").val().length === 0) {
+        return
+    }
+
+    try {
+        // hide the table first and disable the generateButton
+        $("#curriculum").hide()
+        setSubmitButtonDisabled(true)
+
+        // login to get webpid1
+        setStatusText("登入中...")
+        const webpid1 = await getWebpid1()
+
+        // use the webpid1 to request the course datas
+        setStatusText("正在生成你的課表...")
+        const courseDatas = await getPersonalCourseDatas(webpid1)
+
+        // render the table base on datas
+        resetTable()
+        renderTable(courseDatas.所有課程)
+        $("#curriculum").rowspanizer()
+        $("#curriculum").show()
+        setStatusText("生成成功！")
+
+    } catch (err) {
+        if (err.response.status == '401') {
+            setStatusText("帳號或密碼錯誤")
+        } else {
+            setStatusText("無法預期的錯誤")
+        }
+    } finally {
+        setSubmitButtonDisabled(false)
+    }
+}
+
+// ----------------------------------------------------------
+// ----------------on export button click--------------------
+// ----------------------------------------------------------
+
+const downloadURI = (uri, fileName) => {
+    let link = document.createElement("a")
+    link.href = uri.replace('image/png', 'image/octet-stream')
+    link.download = fileName
+    link.click()
+}
+
+const onExportButtonClick = () => {
+    const isConfirm = window.confirm('確定下載「選課結果.png」？(可能需要等待幾秒)')
+    if (!isConfirm) {
+        return
+    }
+    const table = document.getElementById('curriculum')
+    const originalBorderRadius = table.style.borderRadius
+    const originalWidth = table.style.width
+    
+    table.style.borderRadius = "30px"
+    table.style.width = "800px"
+
+    html2canvas(table, {backgroundColor: null}).then(canvas => {
+        const img = canvas.toDataURL('image/png')
+        downloadURI(img, "課表.png")
+    })
+    table.style.borderRadius = originalBorderRadius
+    table.style.width = originalWidth
+}
+
+// ----------------------------------------------------------
+
+$("#generateButton").on('click', function(){
+    onGeneratorButtonClick().then()
+})
+
+$("#exportButton").on('click', onExportButtonClick)
 
 
 
