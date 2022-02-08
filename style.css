@@ -19,9 +19,19 @@ footer {
     height: 100px;
 }
 
+h1 {
+    font-size: 1.5rem !important;
+}
+
 .navbar {
     background-color: rgb(194, 218, 226);
     margin-bottom: 30px;
+}
+
+.brand {
+    align-items: center;
+    color: red;
+    display: flex !important;
 }
 
 #curriculum {

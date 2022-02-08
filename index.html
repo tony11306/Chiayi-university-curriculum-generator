@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="一個用來生成嘉義大學課表的網頁，讓你不用慢慢做課表。">
+    <meta name="description" content="一個用來生成嘉義大學課表的網頁，讓你不用慢慢做課表。除了在網頁生成課表外，也能夠使用輸出 png 圖片功能，一張圖片用一學期">
+    <meta name="KeyWords" content="tony11306,嘉義大學課表產生器,嘉大課表產生器,嘉義大學課表,嘉義大學,嘉大課表,課表產生器,課表,嘉大">
     <title>嘉義大學課表產生器</title>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HMVJ7NC8SP"></script>
@@ -68,10 +69,10 @@
 
 <body>
     <nav class="navbar navbar-light navbar-expand-lg">
-        <a class="navbar-brand" href="#">
+        <div class="navbar-brand brand">
             <img src="images/icon.png" width="50" height="50" alt="">
-            嘉義大學課表產生器
-        </a>
+            <h1 class="ml-3">嘉義大學課表產生器</h1>
+        </div>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
                 <a class="nav-item nav-link" href="https://github.com/tony11306/Chiayi-university-curriculum-generator"
@@ -86,7 +87,8 @@
     <main>
         <div class="container">
             <div class="alert alert-light" role="alert">
-                【Bug】目前 ios 手機用戶點擊輸出課表的按鈕會無法正確輸出，請暫時使用電腦或 Android。若 ios 用戶想輸出 png 需要使用 Safari 瀏覽器，排版顯示目前會有問題，原因似乎和 ios 的檔案系統和瀏覽器 bug 有關。
+                【Bug】目前 ios 手機用戶點擊輸出課表的按鈕會無法正確輸出，請暫時使用電腦或 Android。若 ios 用戶想輸出 png 需要使用 Safari 瀏覽器，排版顯示目前會有問題，原因似乎和 ios
+                的檔案系統和瀏覽器 bug 有關。
                 <br>
                 【提醒】由於程式後端會在沒人使用時休眠，所以使用時卡登入太久可以重整一下，有問題可以回報
 
