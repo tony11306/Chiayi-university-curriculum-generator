@@ -215,7 +215,7 @@ const downloadURI = (uri, fileName) => {
 }
 
 const onExportButtonClick = () => {
-    const isConfirm = window.confirm('確定下載「選課結果.png」？(可能需要等待幾秒)')
+    const isConfirm = window.confirm('確定下載「課表.png」？(可能需要等待幾秒)')
     if (!isConfirm) {
         return
     }
