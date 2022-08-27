@@ -26,8 +26,8 @@ const CLASS_MAP = {
     'C': 13,
     'D': 14
 }
-const LOGIN_URL = 'https://chayi-university-system-api.herokuapp.com/login'
-const PERSONAL_COURSE_DATAS_URL = 'https://chayi-university-system-api.herokuapp.com/course'
+const LOGIN_URL = 'https://ncyu-courseapi.azurewebsites.net/login'
+const PERSONAL_COURSE_DATAS_URL = 'https://ncyu-courseapi.azurewebsites.net/course'
 
 const setSubmitButtonDisabled = (isDisabled) => {
     $(".form-submit").prop('disabled', isDisabled)

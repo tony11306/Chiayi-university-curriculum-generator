@@ -2,6 +2,12 @@ html, body {
     font-family: sans-serif;
 }
 
+main {
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 0 20px;
+}
+
 html {
     min-height: 100%;
     position: relative;
@@ -43,6 +49,7 @@ h1 {
     border-collapse: separate;
     margin-bottom: 80px;
     margin-top: 30px;
+    max-width: 1200px;
     
 }
 
