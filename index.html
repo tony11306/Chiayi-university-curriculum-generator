@@ -85,11 +85,15 @@
 
 
     <main>
+        <div class="alert alert-danger" role="alert">
+            【重大問題】學校目前在登入網頁新增了驗證碼機制，我需要花時間研究怎麼解決，不確定能否解決😞。
+        </div>
         <div class="alert alert-light" role="alert">
+
+            <br>
             【Bug】目前 ios 手機用戶點擊輸出課表的按鈕會無法正確輸出，請暫時使用電腦或 Android。若 ios 用戶想輸出 png 需要使用 Safari 瀏覽器，排版顯示目前會有問題，原因似乎和 ios
             的檔案系統和瀏覽器 bug 有關。
-            <br>
-            【提醒】由於程式後端會在沒人使用時休眠，所以使用時卡登入太久可以重整一下，有問題可以回報
+
 
             <a href="mailto:tony20020507@gmail.com">tony11306</a>。
             <br>
@@ -104,30 +108,31 @@
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1">密碼</label>
-                <input class="form-control" type="password" id="password" name="password" value=""
-                    required="required" required placeholder="你校務行政系統的密碼">
+                <input class="form-control" type="password" id="password" name="password" value="" required="required"
+                    required placeholder="你校務行政系統的密碼">
                 <small class="form-text text-muted">放心，程式後端不會記錄你的密碼</small>
             </div>
             <span id="status" class="text-muted"></span>
             <br>
             <button id="generateButton" class="btn btn-outline-primary form-submit" type="submit">生成</button>
             <div class="table-responsive table-div">
-                <button class="btn bg-secondary text-white rounded float-right mb-1" id="exportButton" type="button">輸出為 png </button>
+                <button class="btn bg-secondary text-white rounded float-right mb-1" id="exportButton" type="button">輸出為
+                    png </button>
                 <table id="curriculum" class="table">
-    
+
                 </table>
             </div>
         </form>
-        
+
     </main>
-    
+
 
     <!-- Footer -->
     <footer class="text-center text-lg-start text-muted">
         <!-- Section: Social media -->
         <!-- Copyright -->
         <div class="text-center p-4">
-            © 2022 Copyright:
+            © 2023 Copyright:
             <a class="text-reset fw-bold" href="https://github.com/tony11306" target="_blank">tony11306</a>
             All right preserved.
         </div>
